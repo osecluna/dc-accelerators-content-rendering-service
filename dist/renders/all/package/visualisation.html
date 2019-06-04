@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SFCC visualisation</title>
+    <title>Visualisation for any content</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=1">
     <style>
         html, body {
@@ -13,7 +13,7 @@
             font-family: Arial, Helvetica, sans-serif;
         }
     </style>
-    <link rel="stylesheet" href="{VISUALIZATION_BASEPATH}/renders/all/styles.min.css" />
+    <link rel="stylesheet" href="https://s3-eu-west-1.amazonaws.com/dev-solutions/DC-accelerators-with-CRS-v2.0.0/dist/renders/all/styles.min.css" />
 </head>
 <body>
 
@@ -21,7 +21,7 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="https://unpkg.com/dc-delivery-sdk-js/dist/dynamicContent.browser.umd.min.js"></script>
-<script src="{VISUALIZATION_BASEPATH}/renders/all/libs.min.js"></script>
+<script src="https://s3-eu-west-1.amazonaws.com/dev-solutions/DC-accelerators-with-CRS-v2.0.0/dist/renders/all/libs.min.js"></script>
 <script>
     function getQueryVar(variable) {
         var query = window.location.search.substring(1);
@@ -38,7 +38,7 @@
         /* Fetch HTML using SDK */
         const vseDomain = getQueryVar('vse');
         const slotId = getQueryVar('content');
-        const template = sfcc-contentWrapper;
+        const template = getQueryVar('template');
         const client = new ampDynamicContent.ContentClient({
           account: 'ampproduct',
           stagingEnvironment: vseDomain

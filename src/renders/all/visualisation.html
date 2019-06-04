@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Visualisation for any content</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=1">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+        * {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+    </style>
+    <link rel="stylesheet" href="{VISUALIZATION_BASEPATH}/renders/all/styles.min.css" />
+</head>
+<body>
+
+<div id="renderContent"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="https://unpkg.com/dc-delivery-sdk-js/dist/dynamicContent.browser.umd.min.js"></script>
+<script src="{VISUALIZATION_BASEPATH}/renders/all/libs.min.js"></script>
+<script>
+    function getQueryVar(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split('&');
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split('=');
+            if (decodeURIComponent(pair[0]) == variable) {
+                return decodeURIComponent(pair[1]);
+            }
+        }
+        return false;
+    }
+    $(document).ready(() => {
+        /* Fetch HTML using SDK */
+        const vseDomain = getQueryVar('vse');
+        const slotId = getQueryVar('content');
+        const template = getQueryVar('template');
+        const client = new ampDynamicContent.ContentClient({
+          account: 'ampproduct',
+          stagingEnvironment: vseDomain
+        });
+        const $div = $('#renderContent');
+        client.renderContentItem(slotId, template)
+        .then((response) => {
+            const html = $.parseHTML(response.body);
+            $div.append(html);
+        })
+        .catch((error) => {
+            console.log('unable to find content', error);
+        });
+
+        /* JS fixes, Add roundels, initialize slider */
+        AmpCa.utils = new AmpCa.Utils();
+        /* Run utils (homepage = all) */
+        AmpCa.utils.postProcessing.execHtmlService('homepage', {});
+        /* initialize slider */
+        loryHelpers.initSliders(document.querySelectorAll('.js_slider'));
+      });
+</script>
+</body>
+</html>
